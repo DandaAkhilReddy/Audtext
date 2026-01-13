@@ -1,7 +1,6 @@
 import os
 import uuid
 from pathlib import Path
-from pydub import AudioSegment
 from core.config import settings
 
 class AudioProcessor:
@@ -36,15 +35,6 @@ class AudioProcessor:
             f.write(file_content)
 
         return str(file_path)
-
-    @staticmethod
-    def get_audio_duration(file_path: str) -> float:
-        """Get audio duration in seconds."""
-        try:
-            audio = AudioSegment.from_file(file_path)
-            return len(audio) / 1000.0  # Convert ms to seconds
-        except:
-            return 0.0
 
     @staticmethod
     def cleanup_file(file_path: str) -> None:

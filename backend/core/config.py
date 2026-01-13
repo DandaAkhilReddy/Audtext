@@ -21,9 +21,9 @@ class Settings(BaseSettings):
     OLLAMA_BASE_URL: str = "http://localhost:11434"
     OLLAMA_MODEL: str = "llama3.1:8b"
 
-    # File settings
-    MAX_FILE_SIZE_MB: int = 500
-    ALLOWED_EXTENSIONS: list = ["mp3", "wav", "m4a", "flac", "ogg", "webm", "mp4"]
+    # File settings - no size limit (0 = unlimited)
+    MAX_FILE_SIZE_MB: int = 0
+    ALLOWED_EXTENSIONS: list = ["mp3", "wav", "m4a", "flac", "ogg", "webm", "mp4", "mpeg", "mpga"]
 
     class Config:
         env_file = ".env"

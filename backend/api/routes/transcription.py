@@ -29,33 +29,26 @@ async def run_transcription(task_id: str, file_path: str):
         transcription_store[task_id].status = TaskStatus.PROCESSING
         transcription_store[task_id].message = "Starting transcription..."
 
-        # Send initial progress via WebSocket
-        await manager.send_progress(task_id, 0, "Starting transcription...")
+        # Simple sync callback that updates the store (works in thread pool)
+        def sync_progress(task_id: str, progress: float, message: str, current_segment: int = None):
+            if task_id in transcription_store:
+                transcription_store[task_id].progress = progress
+                transcription_store[task_id].message = message
 
-        # Create async progress callback wrapper
-        async def async_progress(task_id: str, progress: float, message: str, current_segment: int = None):
-            progress_callback(task_id, progress, message, current_segment)
-            await manager.send_progress(task_id, progress, message, "processing", current_segment)
-
-        # Run transcription
+        # Run transcription with sync callback
         result = await whisper_service.transcribe(
             file_path,
             task_id,
-            lambda **kwargs: asyncio.create_task(async_progress(**kwargs))
+            sync_progress
         )
 
         # Store result
         transcription_store[task_id] = result
 
-        # Send completion via WebSocket
-        await manager.send_progress(
-            task_id, 100, "Transcription complete!", "completed"
-        )
-
     except Exception as e:
-        transcription_store[task_id].status = TaskStatus.FAILED
-        transcription_store[task_id].message = str(e)
-        await manager.send_progress(task_id, 0, f"Error: {str(e)}", "failed")
+        if task_id in transcription_store:
+            transcription_store[task_id].status = TaskStatus.FAILED
+            transcription_store[task_id].message = str(e)
 
     finally:
         # Cleanup uploaded file
@@ -75,11 +68,12 @@ async def upload_audio(
             detail=f"Invalid file type. Allowed: {', '.join(settings.ALLOWED_EXTENSIONS)}"
         )
 
-    # Check file size
+    # Read file content
     content = await file.read()
     file_size_mb = len(content) / (1024 * 1024)
 
-    if file_size_mb > settings.MAX_FILE_SIZE_MB:
+    # Check file size only if limit is set (0 = unlimited)
+    if settings.MAX_FILE_SIZE_MB > 0 and file_size_mb > settings.MAX_FILE_SIZE_MB:
         raise HTTPException(
             status_code=400,
             detail=f"File too large. Maximum size: {settings.MAX_FILE_SIZE_MB}MB"

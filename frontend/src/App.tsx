@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { FileAudio, Github, Mic2 } from 'lucide-react';
 import { FileDropzone } from './components/FileDropzone';
 import { ProgressBar } from './components/ProgressBar';
 import { TranscriptViewer } from './components/TranscriptViewer';
 import { SummaryPanel } from './components/SummaryPanel';
 import { ExportButtons } from './components/ExportButtons';
-import { useWebSocket } from './hooks/useWebSocket';
-import { uploadAudio, getResult, TranscriptionResult } from './services/api';
+import { uploadAudio, getStatus, getResult, TranscriptionResult, ProgressUpdate } from './services/api';
 
 type AppState = 'idle' | 'uploading' | 'processing' | 'completed' | 'error';
 
@@ -16,8 +15,8 @@ function App() {
   const [filename, setFilename] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<TranscriptionResult | null>(null);
-
-  const { progress } = useWebSocket(state === 'processing' ? taskId : null);
+  const [progress, setProgress] = useState<ProgressUpdate | null>(null);
+  const pollingRef = useRef<NodeJS.Timeout | null>(null);
 
   // Handle file upload
   const handleFileAccepted = async (file: File) => {
@@ -25,6 +24,7 @@ function App() {
     setError(null);
     setFilename(file.name);
     setResult(null);
+    setProgress(null);
 
     try {
       const response = await uploadAudio(file);
@@ -36,32 +36,57 @@ function App() {
     }
   };
 
-  // Check for completion via WebSocket progress
+  // Poll for progress when processing
   useEffect(() => {
-    if (progress?.status === 'completed' && taskId) {
-      // Fetch the full result
-      getResult(taskId)
-        .then((data) => {
-          setResult(data);
-          setState('completed');
-        })
-        .catch((err) => {
-          setError(err.message);
-          setState('error');
-        });
-    } else if (progress?.status === 'failed') {
-      setError(progress.message);
-      setState('error');
+    if (state === 'processing' && taskId) {
+      const pollStatus = async () => {
+        try {
+          const statusData = await getStatus(taskId);
+          setProgress(statusData);
+
+          if (statusData.status === 'completed') {
+            // Fetch the full result
+            const resultData = await getResult(taskId);
+            setResult(resultData);
+            setState('completed');
+            return; // Stop polling
+          } else if (statusData.status === 'failed') {
+            setError(statusData.message || 'Transcription failed');
+            setState('error');
+            return; // Stop polling
+          }
+
+          // Continue polling
+          pollingRef.current = setTimeout(pollStatus, 1500);
+        } catch (err) {
+          // Continue polling on error (server might be busy)
+          pollingRef.current = setTimeout(pollStatus, 2000);
+        }
+      };
+
+      // Start polling
+      pollStatus();
+
+      // Cleanup
+      return () => {
+        if (pollingRef.current) {
+          clearTimeout(pollingRef.current);
+        }
+      };
     }
-  }, [progress, taskId]);
+  }, [state, taskId]);
 
   // Reset to start new transcription
   const handleReset = () => {
+    if (pollingRef.current) {
+      clearTimeout(pollingRef.current);
+    }
     setState('idle');
     setTaskId(null);
     setFilename('');
     setError(null);
     setResult(null);
+    setProgress(null);
   };
 
   return (
@@ -130,21 +155,11 @@ function App() {
         )}
 
         {/* Processing state */}
-        {state === 'processing' && progress && (
+        {state === 'processing' && (
           <ProgressBar
-            progress={progress.progress}
-            status={progress.status}
-            message={progress.message}
-            filename={filename}
-          />
-        )}
-
-        {/* Processing without WebSocket data yet */}
-        {state === 'processing' && !progress && (
-          <ProgressBar
-            progress={0}
-            status="processing"
-            message="Starting transcription..."
+            progress={progress?.progress || 0}
+            status={progress?.status || 'processing'}
+            message={progress?.message || 'Starting transcription...'}
             filename={filename}
           />
         )}
