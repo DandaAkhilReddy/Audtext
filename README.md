@@ -1,47 +1,125 @@
-# Audtext - Audio Transcription & Summarization
+<div align="center">
 
-A modern web application that transcribes audio files (up to 1 hour) using OpenAI Whisper locally and generates AI-powered summaries with Ollama. All processing happens on your machine - your audio never leaves your computer.
+# 🎙️ Audtext
 
-![Audtext](https://img.shields.io/badge/Powered%20by-Whisper%20%26%20Ollama-blue)
-![License](https://img.shields.io/badge/license-MIT-green)
+### *Transform Audio into Text & Insights — 100% Local, 100% Private*
 
-## Features
+[![GitHub stars](https://img.shields.io/github/stars/DandaAkhilReddy/Audtext?style=for-the-badge&logo=github&color=yellow)](https://github.com/DandaAkhilReddy/Audtext/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/DandaAkhilReddy/Audtext?style=for-the-badge&logo=github&color=blue)](https://github.com/DandaAkhilReddy/Audtext/network/members)
+[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
+[![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev)
 
-- **Local Processing** - All transcription happens on your machine. Your audio never leaves your computer.
-- **Long Audio Support** - Handle audio files up to 1 hour long with real-time progress tracking.
-- **AI Summaries** - Generate intelligent summaries using local LLM with Ollama (no API costs).
-- **Multiple Export Formats** - Export transcripts as TXT, SRT (subtitles), VTT, or JSON.
-- **Beautiful UI** - Modern, responsive interface built with React and Tailwind CSS.
-- **No File Size Limit** - Upload audio files of any size.
+<br/>
 
-## Tech Stack
+<img src="https://raw.githubusercontent.com/DandaAkhilReddy/Audtext/main/docs/demo.gif" alt="Audtext Demo" width="800"/>
 
-| Component | Technology |
-|-----------|------------|
-| Frontend | React 18 + Vite + Tailwind CSS |
-| Backend | FastAPI + Python 3.11+ |
-| Transcription | faster-whisper (CPU-optimized) |
-| Summarization | Ollama (llama3.1:8b) |
+<br/>
+
+**[🚀 Quick Start](#-quick-start)** • **[✨ Features](#-features)** • **[📖 Documentation](#-installation)** • **[🤝 Contributing](#-contributing)**
+
+</div>
 
 ---
 
-## Prerequisites
+## 🌟 Why Audtext?
 
-Before running Audtext, install the following:
+<table>
+<tr>
+<td width="50%">
 
-### 1. Python 3.11+
-- Download from [python.org](https://www.python.org/downloads/)
-- Make sure to check "Add Python to PATH" during installation
+### 🔒 **Privacy First**
+Your audio **never leaves your computer**. Everything runs locally using OpenAI's Whisper model - no cloud uploads, no API keys needed, no subscription costs.
 
-### 2. Node.js 18+
-- Download from [nodejs.org](https://nodejs.org/)
+</td>
+<td width="50%">
 
-### 3. FFmpeg (Required for audio processing)
+### ⚡ **Lightning Fast**
+CPU-optimized transcription with `faster-whisper`. Process 1-hour audio files in minutes, not hours. Real-time progress tracking included.
+
+</td>
+</tr>
+<tr>
+<td width="50%">
+
+### 🤖 **AI-Powered Summaries**
+Get intelligent summaries using Ollama's local LLM. Choose from concise, detailed, or bullet-point formats - all without API costs.
+
+</td>
+<td width="50%">
+
+### 📤 **Multiple Export Formats**
+Export your transcripts as **TXT**, **SRT**, **VTT**, or **JSON**. Perfect for subtitles, documentation, or further processing.
+
+</td>
+</tr>
+</table>
+
+---
+
+## ✨ Features
+
+<div align="center">
+
+| Feature | Description |
+|:-------:|:------------|
+| 🎵 **Multi-Format Support** | MP3, WAV, M4A, FLAC, OGG, WEBM, MP4 |
+| 📊 **Real-Time Progress** | Watch transcription progress live |
+| 🕐 **Timestamps** | Every segment includes precise timing |
+| 🌍 **Multi-Language** | Automatic language detection |
+| 📱 **Responsive UI** | Beautiful interface on any device |
+| 🔄 **No Size Limits** | Upload audio files of any length |
+
+</div>
+
+---
+
+## 🏗️ Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                         AUDTEXT                                  │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                  │
+│   ┌──────────────┐     ┌──────────────┐     ┌──────────────┐   │
+│   │              │     │              │     │              │   │
+│   │   Frontend   │────▶│   Backend    │────▶│   Whisper    │   │
+│   │   React 18   │     │   FastAPI    │     │   (Local)    │   │
+│   │              │     │              │     │              │   │
+│   └──────────────┘     └──────┬───────┘     └──────────────┘   │
+│                               │                                  │
+│                               ▼                                  │
+│                        ┌──────────────┐                         │
+│                        │              │                         │
+│                        │   Ollama     │                         │
+│                        │   (LLM)      │                         │
+│                        │              │                         │
+│                        └──────────────┘                         │
+│                                                                  │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+| Requirement | Version | Installation |
+|-------------|---------|--------------|
+| Python | 3.11+ | [python.org](https://python.org) |
+| Node.js | 18+ | [nodejs.org](https://nodejs.org) |
+| FFmpeg | Latest | See below |
+| Ollama | Latest | [ollama.ai](https://ollama.ai) |
+
+<details>
+<summary><b>📦 Install FFmpeg</b></summary>
+
 ```bash
-# Windows (using winget)
+# Windows (winget)
 winget install ffmpeg
 
-# Windows (using chocolatey)
+# Windows (chocolatey)
 choco install ffmpeg
 
 # macOS
@@ -51,32 +129,58 @@ brew install ffmpeg
 sudo apt install ffmpeg
 ```
 
-### 4. Ollama (Required for AI Summaries)
-1. Download from [ollama.ai](https://ollama.ai/)
-2. Install it
-3. Open a terminal and download the model:
+</details>
+
+### ⚡ 3-Step Setup
+
 ```bash
+# 1️⃣ Clone & Setup Backend
+git clone https://github.com/DandaAkhilReddy/Audtext.git
+cd Audtext/backend
+python -m venv venv && .\venv\Scripts\activate  # Windows
+pip install -r requirements.txt
+
+# 2️⃣ Setup Frontend
+cd ../frontend
+npm install
+
+# 3️⃣ Download AI Model
 ollama pull llama3.1:8b
 ```
 
----
+### 🎬 Run the App
 
-## Installation
+Open **3 terminals**:
 
-### Step 1: Clone the Repository
 ```bash
-git clone https://github.com/DandaAkhilReddy/Audtext.git
-cd Audtext
+# Terminal 1 - AI Engine
+ollama serve
+
+# Terminal 2 - Backend (activate venv first!)
+cd Audtext/backend && .\venv\Scripts\activate
+uvicorn main:app --reload --port 8000
+
+# Terminal 3 - Frontend
+cd Audtext/frontend
+npm run dev
 ```
 
-### Step 2: Set Up the Backend
+🌐 **Open** → [http://localhost:5173](http://localhost:5173)
+
+---
+
+## 📖 Installation
+
+<details>
+<summary><b>🔧 Detailed Backend Setup</b></summary>
+
 ```bash
 cd backend
 
 # Create virtual environment
 python -m venv venv
 
-# Activate virtual environment
+# Activate it
 # Windows:
 .\venv\Scripts\activate
 # macOS/Linux:
@@ -86,186 +190,178 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### Step 3: Set Up the Frontend
+**Dependencies include:**
+- `fastapi` - Modern web framework
+- `faster-whisper` - Optimized speech recognition
+- `httpx` - Async HTTP client for Ollama
+- `pydantic` - Data validation
+
+</details>
+
+<details>
+<summary><b>🎨 Detailed Frontend Setup</b></summary>
+
 ```bash
-cd ../frontend
+cd frontend
+
+# Install dependencies
 npm install
-```
 
----
-
-## Running the Application
-
-You need **3 terminals** to run the full application:
-
-### Terminal 1: Start Ollama
-```bash
-ollama serve
-```
-> Note: If you see "address already in use", Ollama is already running. That's fine!
-
-### Terminal 2: Start the Backend
-```bash
-cd Audtext/backend
-
-# Activate virtual environment first
-# Windows:
-.\venv\Scripts\activate
-# macOS/Linux:
-source venv/bin/activate
-
-# Start the server
-uvicorn main:app --reload --port 8000
-```
-
-### Terminal 3: Start the Frontend
-```bash
-cd Audtext/frontend
+# Start development server
 npm run dev
+
+# Build for production
+npm run build
 ```
 
-### Open the App
-Navigate to **http://localhost:5173** (or the port shown in the terminal)
+**Built with:**
+- `React 18` - UI framework
+- `Vite` - Lightning fast bundler
+- `Tailwind CSS` - Utility-first styling
+- `Lucide React` - Beautiful icons
+
+</details>
 
 ---
 
-## Usage
+## ⚙️ Configuration
 
-1. **Upload Audio** - Drag and drop or click to select an audio file (MP3, WAV, M4A, FLAC, OGG, WEBM, MP4)
-2. **Wait for Transcription** - Watch the progress bar as Whisper processes your audio
-3. **View Transcript** - See the full transcript with timestamps
-4. **Generate Summary** - Click to generate an AI-powered summary with Ollama
-5. **Export** - Download your transcript in various formats (TXT, SRT, VTT, JSON)
+### 🎤 Whisper Models
 
----
-
-## Troubleshooting
-
-### Issue: "Failed to fetch" or connection errors on upload
-**Solution:** Make sure the backend is running on port 8000. Check the terminal for errors.
-
-### Issue: Transcription shows "failed" status
-**Solution:** This was fixed by using polling instead of WebSocket for progress updates. Make sure you have the latest code.
-
-### Issue: Summary returns 500 error
-**Solution:**
-1. Make sure Ollama is installed and running (`ollama serve`)
-2. Make sure you have the model downloaded (`ollama pull llama3.1:8b`)
-3. Verify Ollama is working: `curl http://localhost:11434/api/tags`
-
-### Issue: "ModuleNotFoundError: No module named 'pyaudioop'"
-**Solution:** This happens on Python 3.13. The code has been updated to not require pydub. Make sure you have the latest code.
-
-### Issue: First transcription is slow
-**Solution:** The first transcription downloads the Whisper model (~150MB for base model). Subsequent transcriptions will be faster.
-
-### Issue: Port already in use
-**Solution:**
-- Backend port 8000 in use: `netstat -ano | findstr :8000` then kill the process
-- Ollama port 11434 in use: Ollama is already running, which is fine
-- Frontend will automatically use the next available port
-
----
-
-## Configuration
-
-### Whisper Model Selection
-Edit `backend/core/config.py` to change the Whisper model:
+Edit `backend/core/config.py`:
 
 ```python
 WHISPER_MODEL: str = "base"  # Options: tiny, base, small, medium, large
 ```
 
 | Model | RAM | Speed (1hr audio) | Quality |
-|-------|-----|-------------------|---------|
-| tiny | 1GB | ~5 min | Fair |
-| base | 1.5GB | ~10 min | Good (default) |
-| small | 2.5GB | ~20 min | Better |
-| medium | 5GB | ~40 min | Great |
+|:-----:|:---:|:-----------------:|:-------:|
+| `tiny` | 1GB | ~5 min | ⭐⭐ |
+| `base` | 1.5GB | ~10 min | ⭐⭐⭐ |
+| `small` | 2.5GB | ~20 min | ⭐⭐⭐⭐ |
+| `medium` | 5GB | ~40 min | ⭐⭐⭐⭐⭐ |
 
-### Ollama Model
-Change the summarization model in `backend/core/config.py`:
+### 🤖 Ollama Models
 
 ```python
-OLLAMA_MODEL: str = "llama3.1:8b"  # Or any other Ollama model
+OLLAMA_MODEL: str = "llama3.1:8b"  # Or any Ollama model
 ```
 
 ---
 
-## API Endpoints
+## 🔌 API Reference
 
 | Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/api/upload` | POST | Upload audio file |
-| `/api/status/{task_id}` | GET | Get transcription progress |
-| `/api/result/{task_id}` | GET | Get full transcript |
-| `/api/summarize` | POST | Generate summary |
-| `/api/export/{format}/{task_id}` | GET | Export transcript (txt/srt/vtt/json) |
-| `/api/ollama/health` | GET | Check Ollama status |
+|----------|:------:|-------------|
+| `/api/upload` | `POST` | Upload audio file |
+| `/api/status/{task_id}` | `GET` | Get transcription progress |
+| `/api/result/{task_id}` | `GET` | Get full transcript |
+| `/api/summarize` | `POST` | Generate AI summary |
+| `/api/export/{format}/{task_id}` | `GET` | Export (txt/srt/vtt/json) |
+| `/api/ollama/health` | `GET` | Check Ollama status |
 
-API Documentation available at: http://localhost:8000/docs
+📚 **Interactive Docs** → [http://localhost:8000/docs](http://localhost:8000/docs)
 
 ---
 
-## Project Structure
+## 📁 Project Structure
 
 ```
 Audtext/
-├── backend/
+├── 🐍 backend/
 │   ├── main.py              # FastAPI entry point
 │   ├── requirements.txt     # Python dependencies
 │   ├── api/routes/          # API endpoints
-│   │   ├── transcription.py # Upload, status, results
-│   │   ├── summarization.py # AI summary generation
-│   │   └── export.py        # Export to TXT/SRT/VTT
 │   ├── services/            # Business logic
-│   │   ├── whisper_service.py   # Whisper transcription
-│   │   ├── ollama_service.py    # Ollama summarization
-│   │   └── audio_processor.py   # File handling
-│   ├── core/                # Configuration
-│   │   └── config.py        # App settings
-│   └── models/              # Data models
-│       └── schemas.py       # Pydantic schemas
-├── frontend/
-│   ├── package.json         # Node dependencies
+│   │   ├── whisper_service.py   # Transcription
+│   │   └── ollama_service.py    # Summarization
+│   ├── core/config.py       # Settings
+│   └── tests/               # Test suite
+│
+├── ⚛️ frontend/
 │   ├── src/
-│   │   ├── App.tsx          # Main app component
-│   │   ├── components/      # React components
-│   │   │   ├── FileDropzone.tsx
-│   │   │   ├── ProgressBar.tsx
-│   │   │   ├── TranscriptViewer.tsx
-│   │   │   ├── SummaryPanel.tsx
-│   │   │   └── ExportButtons.tsx
-│   │   ├── services/        # API client
-│   │   │   └── api.ts
-│   │   └── hooks/           # Custom hooks
-│   └── ...
-└── uploads/                 # Temporary audio storage
+│   │   ├── App.tsx          # Main component
+│   │   ├── components/      # UI components
+│   │   └── services/api.ts  # API client
+│   └── package.json
+│
+└── 📂 uploads/              # Temporary storage
 ```
 
 ---
 
-## Known Issues & Fixes Applied
+## 🐛 Troubleshooting
 
-1. **Async callback in thread pool** - Fixed by using sync callbacks for progress updates
-2. **WebSocket reliability** - Replaced with HTTP polling for more reliable progress tracking
-3. **Python 3.13 compatibility** - Removed pydub dependency that required deprecated audioop module
-4. **File size limits** - Removed to allow unlimited file sizes
+<details>
+<summary><b>❌ "Failed to fetch" on upload</b></summary>
+
+Make sure the backend is running on port 8000:
+```bash
+uvicorn main:app --reload --port 8000
+```
+
+</details>
+
+<details>
+<summary><b>❌ Summary returns 500 error</b></summary>
+
+1. Ensure Ollama is running: `ollama serve`
+2. Download the model: `ollama pull llama3.1:8b`
+3. Verify: `curl http://localhost:11434/api/tags`
+
+</details>
+
+<details>
+<summary><b>❌ First transcription is slow</b></summary>
+
+The first run downloads the Whisper model (~150MB for base). Subsequent runs are faster.
+
+</details>
 
 ---
 
-## License
+## 🤝 Contributing
 
-MIT License - see [LICENSE](LICENSE) for details.
+Contributions are welcome! Here's how you can help:
 
-## Author
+1. 🍴 **Fork** the repository
+2. 🌿 **Create** a feature branch (`git checkout -b feature/amazing`)
+3. 💾 **Commit** your changes (`git commit -m 'Add amazing feature'`)
+4. 📤 **Push** to the branch (`git push origin feature/amazing`)
+5. 🔃 **Open** a Pull Request
 
-**Akhil Reddy** - [GitHub](https://github.com/DandaAkhilReddy)
+---
 
-## Acknowledgments
+## 📜 License
 
-- [OpenAI Whisper](https://github.com/openai/whisper) - Speech recognition
-- [faster-whisper](https://github.com/SYSTRAN/faster-whisper) - Optimized CPU inference
-- [Ollama](https://ollama.ai/) - Local LLM runtime
-- [FastAPI](https://fastapi.tiangolo.com/) - Backend framework
-- [React](https://react.dev/) - Frontend framework
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 🙏 Acknowledgments
+
+<div align="center">
+
+| Technology | Purpose |
+|:----------:|:--------|
+| [🎤 OpenAI Whisper](https://github.com/openai/whisper) | Speech Recognition |
+| [⚡ faster-whisper](https://github.com/SYSTRAN/faster-whisper) | Optimized Inference |
+| [🦙 Ollama](https://ollama.ai) | Local LLM Runtime |
+| [🚀 FastAPI](https://fastapi.tiangolo.com) | Backend Framework |
+| [⚛️ React](https://react.dev) | Frontend Framework |
+
+</div>
+
+---
+
+<div align="center">
+
+### ⭐ Star this repo if you find it useful!
+
+Made with ❤️ by [Akhil Reddy](https://github.com/DandaAkhilReddy)
+
+<br/>
+
+[![Star History Chart](https://api.star-history.com/svg?repos=DandaAkhilReddy/Audtext&type=Date)](https://star-history.com/#DandaAkhilReddy/Audtext&Date)
+
+</div>
