@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Sparkles, Copy, Check, Loader2, RefreshCw } from 'lucide-react';
 import { generateSummary } from '../services/api';
 

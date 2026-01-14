@@ -1,4 +1,3 @@
-import React from 'react';
 import { Loader2, CheckCircle, XCircle, Clock } from 'lucide-react';
 
 interface ProgressBarProps {

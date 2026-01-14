@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import Optional, List
 from enum import Enum
 from datetime import datetime
@@ -24,7 +24,7 @@ class TranscriptionResult(BaseModel):
     duration: Optional[float] = None
     segments: List[TranscriptSegment] = []
     full_text: Optional[str] = None
-    created_at: datetime = datetime.now()
+    created_at: datetime = Field(default_factory=datetime.now)
 
 class SummaryRequest(BaseModel):
     task_id: str

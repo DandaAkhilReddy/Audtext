@@ -1,4 +1,3 @@
-import React from 'react';
 import { Download, FileText, Subtitles, FileJson } from 'lucide-react';
 import { getExportUrl } from '../services/api';
 

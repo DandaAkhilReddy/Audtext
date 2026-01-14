@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { FileAudio, Github, Mic2 } from 'lucide-react';
 import { FileDropzone } from './components/FileDropzone';
 import { ProgressBar } from './components/ProgressBar';
@@ -139,7 +139,7 @@ function App() {
         {(state === 'idle' || state === 'error') && (
           <FileDropzone
             onFileAccepted={handleFileAccepted}
-            isUploading={state === 'uploading'}
+            isUploading={false}
             error={error}
           />
         )}

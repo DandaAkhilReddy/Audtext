@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Copy, Check, Clock, FileText, List } from 'lucide-react';
 import type { TranscriptSegment } from '../services/api';
 
